@@ -3,38 +3,48 @@ using namespace std; //std namespace suitable for header file as unlikely to con
 
 int verifyInputs(string message, int min, int max){
     //message is the message to print, max is the max integer value for range, min is the minimum integer value for range, min/max inclusive
-    int in;
+    string in;
+    int num;
     cout << message;
     while (true){
-        cin >> in; //Tries assigning the input to an integer variable
-        if (!cin){ //If its not successful
-            cout << "Please enter an integer: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); //tells the input to check all input until it reaches a newline character \n hence all characters entered.
-            continue;
+        cnt: //goto redirects here to begin the loop again
+        cin.clear();
+        cin >> in; //Takes user input
+
+        for(int i = 0; i < in.length(); i++){
+            if (!isdigit(in[i])){ //Checks if all characters in the string are numeric
+                cout << "Please enter an integer: ";
+                goto cnt; //skips over the second check if non numeric character is found
+            }
         }
-        if (in < min || in > max){ //Check if the integer value is inside the range provided (inclusive)
+
+        num = stoi(in); //converst the now checked for integer string to an int
+        if (num < min || num > max){ //Check if the integer value is inside the range provided (inclusive)
             cout << in << " is not in range of values. Please enter a different integer: ";
             continue;
         }
-        else break; //break from loop if all values are not met
+        else {
+            return num; //returns the integer value
+        }
     } 
-    return in; //returns the interger value
 }
 
 int verifyInputs(string message){
     //Overloading function to allow for no range of integer to purely check if an input is an integer
-    int in;
+    string in;
+    int num;
     cout << message;
     while (true){
+        ctn: //goto redirects here to begin the loop again
+        cin.clear();
         cin >> in;
-        if (!cin){
-            cout << "Please enter an integer: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue;
+        for(int i = 0; i < in.length(); i++){
+            if (!isdigit(in[i])){ //Checks if all characters in the string are numeric
+                cout << "Please enter an integer: ";
+                goto ctn;//skips returning the number if non numeric character found
+            }
         }
-        else break;
+        num = stoi(in);
+        return num;
     } 
-    return in;
 }

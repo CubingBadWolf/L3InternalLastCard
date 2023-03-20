@@ -5,5 +5,6 @@
 
 
 int main(){
-//Will do tests for deck class once started work on functions
+int in = verifyInputs("Enter a number"); //Checking whether new input method works
+std::cout << in;
 }   

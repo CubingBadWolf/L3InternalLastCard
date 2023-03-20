@@ -1,4 +1,7 @@
 #include "includes.h"
+
+#ifndef CARD
+#define CARD
 struct Card{
 private:
 public:
@@ -54,3 +57,4 @@ public:
         }
     }
 };
+#endif
