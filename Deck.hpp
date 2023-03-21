@@ -6,7 +6,8 @@ class Deck{
 private:
 public:
     std::vector<Card> Cards;
-    Deck(bool initialDeck){ //constructor, will initilise deck in here
+
+    Deck(bool initialDeck){ //constructor, will initilise deck in here if intialDeck is true, else it wont
         if(initialDeck){
             for(int n = 1; n < 13; n++){
                 for(int s = 0; s < 4; s++){
@@ -16,8 +17,6 @@ public:
             }
         }
     }
-
-    Deck(){} //Overloads the constructor. Allows for creating a new deck class without creating a new set of cards
     
     void shuffle(){ //deck will need a shuffling function.
         std::random_shuffle(Cards.begin(), Cards.end());
@@ -35,6 +34,12 @@ public:
     }
     void gainCard(Card newCard){ //get passed a card to add to the deck
         Cards.push_back(newCard);
+    }
+    void printCards(std::string message){
+        std::cout << message << std::endl;
+        for (int i = 0; i < Cards.size(); i++){
+            std::cout << i << ": " << Cards[i].pictureValue << Cards[i].suit << std::endl;
+        }
     }
     void RecieveSpecialAction(Card playedCard){ // this will handle what happens when the user recieves a power card
 
