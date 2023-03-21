@@ -21,7 +21,7 @@ public:
     }
     
     void shuffle(){ //deck will need a shuffling function.
-        std::random_shuffle(Cards.begin(), Cards.end());
+        std::shuffle(Cards.begin(), Cards.end(),std::random_device());
     }
     Card takeCard(int index){ //Take a card from the deck, remove it and return the card value
         Card ChosenCard = Cards[index]; 
