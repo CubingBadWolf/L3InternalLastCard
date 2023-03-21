@@ -35,13 +35,12 @@ int verifyInputs(string message){
     int num;
     cout << message;
     while (true){
-        ctn: //goto redirects here to begin the loop again
         cin.clear();
         cin >> in;
         for(int i = 0; i < in.length(); i++){
             if (!isdigit(in[i])){ //Checks if all characters in the string are numeric
                 cout << "Please enter an integer: ";
-                goto ctn;//skips returning the number if non numeric character found
+                break;
             }
         }
         num = stoi(in);
