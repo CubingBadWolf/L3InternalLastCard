@@ -34,6 +34,44 @@ public:
         Cards.pop_back(); // Removes the last element of the vector
         return TopCard;
     }
+
+    Card playCard(Card facingCard, bool computer){
+        int playableCards = 0;
+        for(Card card: Cards){
+            if(card.suit == facingCard.suit || card.pictureValue == facingCard.pictureValue){
+                playableCards++;
+            }
+        }
+        if(playableCards != 0){
+            if(computer){
+                std::cout << "The computer has no cards to play" << std::endl;
+                return facingCard;
+            }
+            std::cout << "You don't have any playable cards" << std::endl;
+            return facingCard;
+        }
+        else{
+            if (computer){
+                for(int i = 0; i < Cards.size(); i++){
+                    if(Cards[i].suit == facingCard.suit || Cards[i].pictureValue == facingCard.pictureValue){
+                        return takeCard(i);
+            }
+        }
+            }
+            while(true){
+                int index = verifyInputs("Which card would you like to play?: ",0 , Cards.size());
+                if(Cards[index].suit == facingCard.suit || Cards[index].pictureValue == facingCard.pictureValue){
+                    std::cout << "You have played " << Cards[index].suit << Cards[index].pictureValue << std::endl;
+                    return takeCard(index);
+                }
+                else{
+                std::cout << "That card can not go on the facing card";
+                }
+            }
+        }
+
+
+    }
     void gainCard(Card newCard){ //get passed a card to add to the deck
         Cards.push_back(newCard);
     }

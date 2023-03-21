@@ -7,9 +7,9 @@
 
 int main(){
     Game game;
-    game.Player.printCards("Here are your cards");
-    std::cout << std::endl;
-    game.Computer.printCards("These are the computer's cards"); //Test to make sure both hands are being delt correctly
-
+    bool win = false;
+    while(!win){
+        win = game.gameloop();
+    }
     return 0;
 }   
