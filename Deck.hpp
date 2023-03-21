@@ -2,6 +2,8 @@
 #include "Card.hpp"
 //Deck planning
 
+#ifndef DECK
+#define DECK
 class Deck{
 private:
 public:
@@ -44,5 +46,5 @@ public:
     void RecieveSpecialAction(Card playedCard){ // this will handle what happens when the user recieves a power card
 
     }
-
 };
+#endif
