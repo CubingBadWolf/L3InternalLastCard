@@ -4,6 +4,11 @@
 #ifndef GAME
 #define GAME
 
+/* TODO:
+    1: Add special card functionality
+    2: Add "Last Card" Calls
+    3: Add Play again features*/
+    
 class Game{
 private:
     bool skipNextTurn = false;

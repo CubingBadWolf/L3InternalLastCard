@@ -11,6 +11,7 @@ int main(){
     while(!win){
         win = game.gameloop();
     }
-    std::cout << "Would you like to play again?" << std::endl; //TODO 
+    std::cout << std::endl << "Would you like to play again?" << std::endl; //TODO 
+    system("pause");
     return 0;
 }   
