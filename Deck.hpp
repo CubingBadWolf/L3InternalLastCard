@@ -55,6 +55,7 @@ public:
             if (computer){
                 for(int i = 0; i < Cards.size(); i++){
                     if(Cards[i].suit == facingCard.suit || Cards[i].pictureValue == facingCard.pictureValue){
+                        std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
                         return takeCard(i);
             }
         }
@@ -62,11 +63,11 @@ public:
             while(true){
                 int index = verifyInputs("Which card would you like to play?: ",0 , Cards.size());
                 if(Cards[index].suit == facingCard.suit || Cards[index].pictureValue == facingCard.pictureValue){
-                    std::cout << "You have played " << Cards[index].suit << Cards[index].pictureValue << std::endl;
+                    std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
                     return takeCard(index);
                 }
                 else{
-                std::cout << "That card can not go on the facing card";
+                std::cout << "That card can not go on the facing card" << std::endl;
                 }
             }
         }

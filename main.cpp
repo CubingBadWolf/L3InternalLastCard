@@ -11,5 +11,6 @@ int main(){
     while(!win){
         win = game.gameloop();
     }
+    std::cout << "Would you like to play again?" << std::endl; //TODO 
     return 0;
 }   

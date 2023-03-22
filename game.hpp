@@ -41,6 +41,7 @@ public:
         }
         topCard = DiscardPile.Cards.back();
         if(Player.Cards.size() == 0){
+            std::cout << "You have won!";
             return true; //checks if a player has no cards left
         }
 
@@ -51,6 +52,7 @@ public:
             std::cout << "The computer has drawn a card" << std::endl;
         }
         if(Computer.Cards.size() == 0){
+            std::cout << "The computer has won!";
             return true; //checks if a computer has no cards left
         }
         std::cout << std::endl; //add a new line in between cards
