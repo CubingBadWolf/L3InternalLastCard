@@ -1,4 +1,6 @@
 #include "includes.h"
+#ifndef IN
+#define IN
 using namespace std; //std namespace suitable for header file as unlikely to contain duplicate library names
 
 int verifyInputs(string message, int min, int max){
@@ -47,3 +49,4 @@ int verifyInputs(string message){
         return num;
     } 
 }
+#endif

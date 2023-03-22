@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "Card.hpp"
+#include "VerifyUserInput.hpp"
 //Deck planning
 
 #ifndef DECK
@@ -42,7 +43,7 @@ public:
                 playableCards++;
             }
         }
-        if(playableCards != 0){
+        if(playableCards == 0){
             if(computer){
                 std::cout << "The computer has no cards to play" << std::endl;
                 return facingCard;

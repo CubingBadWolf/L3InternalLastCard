@@ -24,6 +24,7 @@ public:
             Player.gainCard(DrawPile.takeCard());
             Computer.gainCard(DrawPile.takeCard());
         }
+        DiscardPile.gainCard(DrawPile.takeCard()); //Take the next card to be first card in the discard pile
     }
 
     bool gameloop(){
@@ -39,12 +40,21 @@ public:
             std::cout << "You drew " << ToAdd.pictureValue << ToAdd.suit << std::endl;
         }
         topCard = DiscardPile.Cards.back();
+        if(Player.Cards.size() == 0){
+            return true; //checks if a player has no cards left
+        }
 
         DiscardPile.gainCard(Computer.playCard(topCard, true)); //Computer plays a card onto the discard pile
         if(DiscardPile.Cards.back().pictureValue == topCard.pictureValue && DiscardPile.Cards.back().suit == topCard.suit){
             Card ToAdd = DrawPile.takeCard();
             Computer.gainCard(ToAdd);
+            std::cout << "The computer has drawn a card" << std::endl;
         }
+        if(Computer.Cards.size() == 0){
+            return true; //checks if a computer has no cards left
+        }
+        std::cout << std::endl; //add a new line in between cards
+        return false; //No one has won yet if this is reached
     }
 };
 
