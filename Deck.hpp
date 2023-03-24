@@ -7,6 +7,7 @@
 #define DECK
 class Deck{
 private:
+    char Suits[4] = {'H','S','D','C'};
 public:
     std::vector<Card> Cards;
 
@@ -36,7 +37,7 @@ public:
         return TopCard;
     }
 
-    Card playCard(Card facingCard, bool computer){
+    Card playCard(Card facingCard, bool& skip, char& nextSuit, bool computer){
         int playableCards = 0;
         for(Card card: Cards){
             if(card.suit == facingCard.suit || card.pictureValue == facingCard.pictureValue){
@@ -56,35 +57,87 @@ public:
                 for(int i = 0; i < Cards.size(); i++){
                     if(Cards[i].suit == facingCard.suit || Cards[i].pictureValue == facingCard.pictureValue){
                         std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
-                        return takeCard(i);
+
+                        switch(Cards[i].pictureValue){
+                        case 'A':{ //Change suit to your chosing
+                            std::random_device rng;
+                            std::uniform_int_distribution<int> dist(0, 3); //Generates random numbers to pick which suit
+
+                            nextSuit = Suits[dist(rng)];
+                            std::cout << "The computer has changed the suit to " << nextSuit << std::endl;
+                            return takeCard(i);
+                        }
+                        case '2': //Next player picks up to cards
+                            std::cout << "Pick up next card" << std::endl;
+                            skip = true;
+                            nextSuit = Cards[i].suit;
+                            return takeCard(i);
+
+                        case '8'://Next player skips their next turn
+                            skip = true;
+                            nextSuit = Cards[i].suit;
+                            return takeCard(i);
+
+                        case 'J': //play again (For 2 players this is the same as an 8)
+                            skip = true;
+                            nextSuit = Cards[i].suit;
+                            return takeCard(i);
+
+                        default:
+                            nextSuit = Cards[i].suit;
+                            return takeCard(i);
+                    }
+                }
             }
-        }
             }
             while(true){
-                int index = verifyInputs("Which card would you like to play?: ",0 , Cards.size());
+                int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
                 if(Cards[index].suit == facingCard.suit || Cards[index].pictureValue == facingCard.pictureValue){
                     std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
-                    return takeCard(index);
+                    switch(Cards[index].pictureValue){
+                        case 'A':{ //Change suit to your chosing
+                            int suitNum = verifyInputs("What suit do you wish to change it to?\n0:H\n1:S\n2:D\n3:C",0,4);
+                            nextSuit = Suits[suitNum];
+                            return takeCard(index);
+                        }
+                        case '2': //Next player picks up to cards
+                            std::cout << "Pick up next card" << std::endl;
+                            skip = true;
+                            nextSuit = Cards[index].suit;
+                            return takeCard(index);
+
+                        case '8'://Next player skips their next turn
+                            skip = true;
+                            nextSuit = Cards[index].suit;
+                            return takeCard(index);
+
+                        case 'J': //play again (For 2 players this is the same as an 8)
+                            skip = true;
+                            nextSuit = Cards[index].suit;
+                            return takeCard(index);
+
+                        default:
+                            nextSuit = Cards[index].suit;
+                            return takeCard(index);
+                    }
                 }
                 else{
                 std::cout << "That card can not go on the facing card" << std::endl;
                 }
             }
         }
-
-
     }
+
     void gainCard(Card newCard){ //get passed a card to add to the deck
         Cards.push_back(newCard);
     }
+
     void printCards(std::string message){
         std::cout << message << std::endl;
         for (int i = 0; i < Cards.size(); i++){
             std::cout << i << ": " << Cards[i].pictureValue << Cards[i].suit << std::endl;
         }
     }
-    void RecieveSpecialAction(Card playedCard){ // this will handle what happens when the user recieves a power card
-
-    }
+    
 };
 #endif

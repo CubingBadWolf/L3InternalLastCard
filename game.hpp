@@ -5,7 +5,7 @@
 #define GAME
 
 /* TODO:
-    1: Add special card functionality
+    1: Add special card functionality * Add skip test and add second player picks after 2 played
     2: Add "Last Card" Calls
     3: Add Play again features*/
     
@@ -34,11 +34,13 @@ public:
 
     bool gameloop(){
         //method to run all the steps in a game of last card
+        char upSuit = DiscardPile.Cards.back().suit;
         Player.printCards("This is your hand:");
         topCard = DiscardPile.Cards.back(); //Takes the top card of the discard pile from the stack
         std::cout << "The top card of the discard pile is " << topCard.pictureValue << topCard.suit << std::endl;
+    
+        DiscardPile.gainCard(Player.playCard(topCard, skipNextTurn, upSuit, false)); //Adds the played card to the top of the discard pile from the stack
 
-        DiscardPile.gainCard(Player.playCard(topCard, false)); //Adds the played card to the top of the discard pile from the stack
         if(DiscardPile.Cards.back().pictureValue == topCard.pictureValue && DiscardPile.Cards.back().suit == topCard.suit){
             Card ToAdd = DrawPile.takeCard();
             Player.gainCard(ToAdd);
@@ -50,7 +52,8 @@ public:
             return true; //checks if a player has no cards left
         }
 
-        DiscardPile.gainCard(Computer.playCard(topCard, true)); //Computer plays a card onto the discard pile
+        DiscardPile.gainCard(Computer.playCard(topCard, skipNextTurn, upSuit, true)); //Computer plays a card onto the discard pile
+
         if(DiscardPile.Cards.back().pictureValue == topCard.pictureValue && DiscardPile.Cards.back().suit == topCard.suit){
             Card ToAdd = DrawPile.takeCard();
             Computer.gainCard(ToAdd);
