@@ -37,10 +37,10 @@ public:
         return TopCard;
     }
 
-    Card playCard(Card facingCard, bool& skip, char& nextSuit, bool computer){
+    Card playCard(Card facingCard, bool& skip, bool& pick2, char& nextSuit, bool computer){
         int playableCards = 0;
         for(Card card: Cards){
-            if(card.suit == facingCard.suit || card.pictureValue == facingCard.pictureValue){
+            if(card.suit == nextSuit || card.pictureValue == facingCard.pictureValue){
                 playableCards++;
             }
         }
@@ -55,7 +55,7 @@ public:
         else{
             if (computer){
                 for(int i = 0; i < Cards.size(); i++){
-                    if(Cards[i].suit == facingCard.suit || Cards[i].pictureValue == facingCard.pictureValue){
+                    if(Cards[i].suit == nextSuit || Cards[i].pictureValue == facingCard.pictureValue){
                         std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
 
                         switch(Cards[i].pictureValue){
@@ -68,17 +68,20 @@ public:
                             return takeCard(i);
                         }
                         case '2': //Next player picks up to cards
-                            std::cout << "Pick up next card" << std::endl;
+                            std::cout << "Computer: Pick up 2 cards" << std::endl;
                             skip = true;
+                            pick2 = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
                         case '8'://Next player skips their next turn
+                            std::cout << "Computer: Skip next turn" << std::endl;
                             skip = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
                         case 'J': //play again (For 2 players this is the same as an 8)
+                            std::cout << "Computer: Skip next turn" << std::endl;
                             skip = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
@@ -92,26 +95,29 @@ public:
             }
             while(true){
                 int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
-                if(Cards[index].suit == facingCard.suit || Cards[index].pictureValue == facingCard.pictureValue){
+                if(Cards[index].suit == nextSuit || Cards[index].pictureValue == facingCard.pictureValue){
                     std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
                     switch(Cards[index].pictureValue){
                         case 'A':{ //Change suit to your chosing
-                            int suitNum = verifyInputs("What suit do you wish to change it to?\n0:H\n1:S\n2:D\n3:C",0,4);
+                            int suitNum = verifyInputs("What suit do you wish to change it to?\n0:H\n1:S\n2:D\n3:C\n",0,4);
                             nextSuit = Suits[suitNum];
                             return takeCard(index);
                         }
                         case '2': //Next player picks up to cards
-                            std::cout << "Pick up next card" << std::endl;
+                            std::cout << "Pick up 2 cards!" << std::endl;
                             skip = true;
+                            pick2 = false;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
                         case '8'://Next player skips their next turn
+                            std::cout << "Skip next turn" << std::endl;
                             skip = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
                         case 'J': //play again (For 2 players this is the same as an 8)
+                            std::cout << "Skip next turn" << std::endl;
                             skip = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
