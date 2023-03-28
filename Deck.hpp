@@ -19,6 +19,9 @@ public:
                     Cards.push_back(ToAdd); //Creates a full deck of cards
                 }
             }
+            Cards.push_back(Card(4,14));
+            Cards.push_back(Card(4,14)); //Adds the two jokers to the deck
+
         }
     }
     
@@ -37,10 +40,10 @@ public:
         return TopCard;
     }
 
-    Card playCard(Card facingCard, bool& skip, bool& pick2, char& nextSuit, bool computer){
+    Card playCard(Card facingCard, bool& skip, bool& pick2, bool& pick6, char& nextSuit, bool computer){ //contains references for boolean values for skipping / picking up 2 cards next turn
         int playableCards = 0;
         for(Card card: Cards){
-            if(card.suit == nextSuit || card.pictureValue == facingCard.pictureValue){
+            if(card.suit == nextSuit || card.pictureValue == facingCard.pictureValue || card.pictureValue == 'j'){
                 playableCards++;
             }
         }
@@ -55,7 +58,7 @@ public:
         else{
             if (computer){
                 for(int i = 0; i < Cards.size(); i++){
-                    if(Cards[i].suit == nextSuit || Cards[i].pictureValue == facingCard.pictureValue){
+                    if(Cards[i].suit == nextSuit || Cards[i].pictureValue == facingCard.pictureValue || Cards[i].pictureValue == 'j'){
                         std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
 
                         switch(Cards[i].pictureValue){
@@ -69,7 +72,6 @@ public:
                         }
                         case '2': //Next player picks up to cards
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
-                            skip = true;
                             pick2 = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
@@ -86,6 +88,15 @@ public:
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
+                        case 'j':{
+                            std::random_device rng;
+                            std::uniform_int_distribution<int> dist(0, 3); //Generates random numbers to pick which suit
+
+                            nextSuit = Suits[dist(rng)];
+                            std::cout << "The computer has changed the suit to " << nextSuit << ". Pick up 6" << std::endl;
+                            pick6 = true; //next player pick up 6
+                            return takeCard(i);
+                        }
                         default:
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
@@ -95,7 +106,7 @@ public:
             }
             while(true){
                 int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
-                if(Cards[index].suit == nextSuit || Cards[index].pictureValue == facingCard.pictureValue){
+                if(Cards[index].suit == nextSuit || Cards[index].pictureValue == facingCard.pictureValue || Cards[index].pictureValue == 'j'){
                     std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
                     switch(Cards[index].pictureValue){
                         case 'A':{ //Change suit to your chosing
@@ -105,8 +116,7 @@ public:
                         }
                         case '2': //Next player picks up to cards
                             std::cout << "Pick up 2 cards!" << std::endl;
-                            skip = true;
-                            pick2 = false;
+                            pick2 = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
@@ -121,7 +131,13 @@ public:
                             skip = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
-
+                        
+                        case 'j':{ //Change suit to your chosing
+                            int suitNum = verifyInputs("What suit do you wish to change it to?\n0:H\n1:S\n2:D\n3:C\n",0,4);
+                            nextSuit = Suits[suitNum]; //change the suit
+                            pick6 = true; //make the next player pick up 6
+                            return takeCard(index);
+                        }
                         default:
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
