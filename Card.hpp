@@ -28,6 +28,7 @@ public:
                 break;
             case 14:
                 pictureValue = 'j'; //Joker will be represented with a lowercase j
+                break;
                 
             default: //If it is not then the char value will not be a letter hence Picture should be false
                 pictureValue = '0' + Number;

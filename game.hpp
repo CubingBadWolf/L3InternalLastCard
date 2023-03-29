@@ -30,12 +30,16 @@ public:
     Game(){
         //class constructor deals cards to both player and computer
         DrawPile.shuffle();
+        DiscardPile.gainCard(DrawPile.takeCard()); //Take the next card to be first card in the discard pile
+        DrawPile.Cards.push_back(Card(4,14));
+        DrawPile.Cards.push_back(Card(4,14)); //Adds the two jokers to the deck
         for(int i = 0; i < StartingHand; i++){
             //deals cards from stack as if you were physically dealing cards
             Player.gainCard(DrawPile.takeCard());
             Computer.gainCard(DrawPile.takeCard());
         }
-        DiscardPile.gainCard(DrawPile.takeCard()); //Take the next card to be first card in the discard pile
+        
+
         upSuit = DiscardPile.Cards.back().suit;
         topCard = DiscardPile.Cards.back(); //Takes the top card of the discard pile from the stack
 
@@ -72,7 +76,7 @@ public:
         else{
             Player.printCards("This is your hand:");
             if(upSuit != topCard.suit){
-                std::cout << "The suit was changed to " << upSuit;
+                std::cout << "The suit was changed to " << upSuit << ". ";
             }
             std::cout << "The top card of the discard pile is " << topCard.pictureValue << topCard.suit << std::endl;
             

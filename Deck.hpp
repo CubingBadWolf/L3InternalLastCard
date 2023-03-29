@@ -19,9 +19,6 @@ public:
                     Cards.push_back(ToAdd); //Creates a full deck of cards
                 }
             }
-            Cards.push_back(Card(4,14));
-            Cards.push_back(Card(4,14)); //Adds the two jokers to the deck
-
         }
     }
     
