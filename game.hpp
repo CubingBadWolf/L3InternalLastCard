@@ -6,9 +6,8 @@
 
 /* TODO:
     1: Add "Last Card" Calls (done for computer)
-    3: Format output nicer
-    4: Clean up unnecessary code
-    5: Add chained pick up 2s*/
+    2: Clean up unnecessary code
+    3: Add chained pick up 2s*/
     
 class Game{
 private:
@@ -95,6 +94,9 @@ public:
                 std::cout << "You have won!";
                 return true; //checks if a player has no cards left
             }
+            else if(Player.Cards.size() == 1){
+                //Make input for last card here
+            }
         }
         flipDiscardPile(); // If the draw pile becomes less than two cards flip it
 
@@ -137,6 +139,7 @@ public:
         }
 
         std::cout << std::endl; //add a new line in between cards
+        std::this_thread::sleep_for(std::chrono::milliseconds(500)); //wait 500ms before starting next turn
         return false; //No one has won yet if this is reached
     }
 };
