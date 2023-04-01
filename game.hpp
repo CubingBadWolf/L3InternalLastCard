@@ -6,7 +6,6 @@
 
 /* TODO:
     1: Add "Last Card" Calls (done for computer)
-    2: Add Play again features
     3: Format output nicer
     4: Clean up unnecessary code
     5: Add chained pick up 2s*/
