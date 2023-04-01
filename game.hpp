@@ -33,6 +33,7 @@ public:
         DiscardPile.gainCard(DrawPile.takeCard()); //Take the next card to be first card in the discard pile
         DrawPile.Cards.push_back(Card(4,14));
         DrawPile.Cards.push_back(Card(4,14)); //Adds the two jokers to the deck
+        DrawPile.shuffle(); //shuffle the jokers into the deck
         for(int i = 0; i < StartingHand; i++){
             //deals cards from stack as if you were physically dealing cards
             Player.gainCard(DrawPile.takeCard());

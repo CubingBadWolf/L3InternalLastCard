@@ -11,7 +11,13 @@ int main(){
     while(!win){
         win = game.gameloop();
     }
-    std::cout << std::endl << "Would you like to play again?" << std::endl; //TODO 
-    system("pause");
-    return 0;
+    std::cout << std::endl << "Would you like to play again? y/n" << std::endl; //TODO 
+    char check;
+    std::cin >> check;
+    if(check == 'y' || check == 'Y'){ //Check if input was a capital or a lowercase y
+        main(); //runs the code again
+    }
+    else{
+      return 0;  
+    }
 }   
