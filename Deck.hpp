@@ -110,12 +110,12 @@ public:
             }
             }
             while(true){
-                if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
+                if(havePlay2){ //If the player must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if player does have a two
                     std::cout << "It must be a two. ";
                     while (true){
                         int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
                         if(Cards[index].pictureValue == '2'){
-                            std::cout << "Pick up 2 cards!" << std::endl;
+                            std::cout << "You played " << Cards[index].pictureValue << Cards[index].suit << std::endl << "Pick up 2 cards!" << std::endl;
                             pick2++; //Add to the pick 2 operator
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
