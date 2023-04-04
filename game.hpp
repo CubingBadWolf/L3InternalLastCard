@@ -12,7 +12,9 @@
 class Game{
 private:
     bool skipNextTurn = false;
-    bool drawTwo = false;
+    int drawTwo = 0;
+    Card twos[4] = {Card(2,0), Card(2,1), Card(2,2), Card(2,3)}; //Create an array of the valid 2s
+    bool mustPlayTwo = false;
     bool jokerPlayed = false;
     Card topCard;
     char upSuit;
@@ -46,8 +48,8 @@ public:
     }
     void flipDiscardPile(){
         if(DrawPile.Cards.size() <= 2){ //If the number of cards in the draw pilei s less than or equal to 2 the pile should be turned over
-            for(int i = 0; i < DiscardPile.Cards.size() -1; i++){ //leave one card left in the discard pile
-                DrawPile.gainCard(DiscardPile.takeCard()); //move cards from discard pile stack to the drawpile in affect flipping the deck
+            for(int i = 0; i < DiscardPile.Cards.size() -2; i++){ //leave one card left in the discard pile, Potential ERROR here or in line 62
+                DrawPile.gainCard(DiscardPile.takeCard()); //move cards from discard pile stack to the drawpile in effect flipping the deck
             }
         }
     }
@@ -55,12 +57,24 @@ public:
         //method to run all the steps in a game of last card
         flipDiscardPile();
         
-        if(drawTwo){
-            Player.gainCard(DrawPile.takeCard());
-            Player.gainCard(DrawPile.takeCard());
-            std::cout << "You drew 2 cards" << std::endl;
-            //Draw two cards if the previous card was a 2
-            drawTwo = false;
+        if(drawTwo != 0){
+            for (Card two : twos){
+                vector<Card>::iterator flag = find(Player.Cards.begin(),Player.Cards.end(), two); //defines a interator to where the struct is located, ERROR is either here or line 51
+                if(flag != Player.Cards.end()){ //if the interator is present 
+                    mustPlayTwo = true;
+                }
+            }
+            if(!mustPlayTwo){
+                for(int i = 0; i < drawTwo*2; i++){ //if multiple plus twos were played you must pick up chained pluses
+                    Player.gainCard(DrawPile.takeCard());
+                }
+                std::cout << "You drew" << drawTwo*2 << " cards" << std::endl;
+                //Draw two cards if the previous card was a 2
+                drawTwo = 0; 
+            }
+            else{
+                goto PlayPlayer; //goto where the player can play
+            }
         }
         else if(jokerPlayed){
             for(int i = 0; i < 6; i++){
@@ -73,14 +87,16 @@ public:
             skipNextTurn = false;
         }
         else{
+            mustPlayTwo = false;
+
+            PlayPlayer: //Label where goto leads to if the player can play a 2.
             Player.printCards("This is your hand:");
             if(upSuit != topCard.suit){
                 std::cout << "The suit was changed to " << upSuit << ". ";
             }
             std::cout << "The top card of the discard pile is " << topCard.pictureValue << topCard.suit << std::endl;
             
-
-            DiscardPile.gainCard(Player.playCard(topCard, skipNextTurn, drawTwo, jokerPlayed, upSuit, false)); //Adds the played card to the top of the discard pile from the stack
+            DiscardPile.gainCard(Player.playCard(topCard, skipNextTurn, drawTwo, mustPlayTwo, jokerPlayed, upSuit, false)); //Adds the played card to the top of the discard pile from the stack
         
             if(DiscardPile.Cards.back().pictureValue == topCard.pictureValue && DiscardPile.Cards.back().suit == topCard.suit){
                 Card ToAdd = DrawPile.takeCard();
@@ -100,11 +116,24 @@ public:
         }
         flipDiscardPile(); // If the draw pile becomes less than two cards flip it
 
-        if(drawTwo){
-            Computer.gainCard(DrawPile.takeCard());
-            Computer.gainCard(DrawPile.takeCard());
-            std::cout << "The computer drew two cards" << std::endl;
-            drawTwo = false;
+        if(drawTwo != 0){
+            for (Card two : twos){
+                vector<Card>::iterator flag = find(Computer.Cards.begin(),Computer.Cards.end(), two); //defines a interator to where the struct is located
+                if(flag != Player.Cards.end()){ //if the interator is present 
+                    mustPlayTwo = true;
+                }
+
+            }
+            if(!mustPlayTwo){
+                for(int i = 0; i < drawTwo*2; i++){ //if multiple plus twos were played you must pick up chained pluses
+                    Player.gainCard(DrawPile.takeCard());
+                }
+                std::cout << "The computer drew" << drawTwo*2 << " cards" << std::endl;
+                drawTwo = 0; 
+            }
+            else{
+                goto playComp; //goto where the computer can play
+            }
         }
         else if(jokerPlayed){
             for(int i = 0; i < 6; i++){
@@ -118,7 +147,8 @@ public:
             skipNextTurn = false;
         }
         else{
-            DiscardPile.gainCard(Computer.playCard(topCard, skipNextTurn, drawTwo, jokerPlayed, upSuit, true)); //Computer plays a card onto the discard pile
+            playComp: //goto line 119 directs here if a player can play over a 2
+            DiscardPile.gainCard(Computer.playCard(topCard, skipNextTurn, drawTwo, mustPlayTwo, jokerPlayed, upSuit, true)); //Computer plays a card onto the discard pile
         
             if(DiscardPile.Cards.back().pictureValue == topCard.pictureValue && DiscardPile.Cards.back().suit == topCard.suit){
                 Card ToAdd = DrawPile.takeCard();

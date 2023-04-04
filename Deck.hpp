@@ -37,7 +37,7 @@ public:
         return TopCard;
     }
 
-    Card playCard(Card facingCard, bool& skip, bool& pick2, bool& pick6, char& nextSuit, bool computer){ //contains references for boolean values for skipping / picking up 2 cards next turn
+    Card playCard(Card facingCard, bool& skip, int& pick2, bool& havePlay2, bool& pick6, char& nextSuit, bool computer){ //contains references for boolean values for skipping / picking up 2 cards next turn
         int playableCards = 0;
         for(Card card: Cards){
             if(card.suit == nextSuit || card.pictureValue == facingCard.pictureValue || card.pictureValue == 'j'){
@@ -55,7 +55,15 @@ public:
         else{
             if (computer){
                 for(int i = 0; i < Cards.size(); i++){
-                    if(Cards[i].suit == nextSuit || Cards[i].pictureValue == facingCard.pictureValue || Cards[i].pictureValue == 'j'){
+                    if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
+                        if(Cards[i].pictureValue == '2'){
+                            std::cout << "Computer: Pick up 2 cards" << std::endl;
+                            pick2++; //Add to the pick 2 operator
+                            nextSuit = Cards[i].suit;
+                            return takeCard(i);
+                        }
+                    }
+                    else if(Cards[i].suit == nextSuit || Cards[i].pictureValue == facingCard.pictureValue || Cards[i].pictureValue == 'j'){
                         std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
 
                         switch(Cards[i].pictureValue){
@@ -69,7 +77,7 @@ public:
                         }
                         case '2': //Next player picks up to cards
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
-                            pick2 = true;
+                            pick2++; //Add to the pick 2 operator
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
@@ -102,6 +110,21 @@ public:
             }
             }
             while(true){
+                if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
+                    std::cout << "It must be a two. ";
+                    while (true){
+                        int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
+                        if(Cards[index].pictureValue == '2'){
+                            std::cout << "Pick up 2 cards!" << std::endl;
+                            pick2++; //Add to the pick 2 operator
+                            nextSuit = Cards[index].suit;
+                            return takeCard(index);
+                        }
+                        else{
+                            std::cout << "That card is not a two" << std::endl;
+                        }
+                    }
+                }
                 int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
                 if(Cards[index].suit == nextSuit || Cards[index].pictureValue == facingCard.pictureValue || Cards[index].pictureValue == 'j'){
                     std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
@@ -113,7 +136,7 @@ public:
                         }
                         case '2': //Next player picks up to cards
                             std::cout << "Pick up 2 cards!" << std::endl;
-                            pick2 = true;
+                            pick2++; // Add another list of +2
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
