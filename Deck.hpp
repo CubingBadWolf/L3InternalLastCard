@@ -54,11 +54,14 @@ public:
         }
         else{
             if (computer){
+                
                 for(int i = 0; i < Cards.size(); i++){
                     if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
                         if(Cards[i].pictureValue == '2'){
+                            std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
                             pick2++; //Add to the pick 2 operator
+                            havePlay2 = false;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
                         }
@@ -78,6 +81,7 @@ public:
                         case '2': //Next player picks up to cards
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
                             pick2++; //Add to the pick 2 operator
+                            havePlay2 = false;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
@@ -117,6 +121,7 @@ public:
                         if(Cards[index].pictureValue == '2'){
                             std::cout << "You played " << Cards[index].pictureValue << Cards[index].suit << std::endl << "Pick up 2 cards!" << std::endl;
                             pick2++; //Add to the pick 2 operator
+                            havePlay2 = false;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
                         }
@@ -137,6 +142,7 @@ public:
                         case '2': //Next player picks up to cards
                             std::cout << "Pick up 2 cards!" << std::endl;
                             pick2++; // Add another list of +2
+                            havePlay2 = false;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 

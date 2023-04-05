@@ -13,7 +13,7 @@ class Game{
 private:
     bool skipNextTurn = false;
     int drawTwo = 0;
-    Card twos[4] = {Card(2,0), Card(2,1), Card(2,2), Card(2,3)}; //Create an array of the valid 2s
+    Card twos[4] = {Card(0,2), Card(1,2), Card(2,2), Card(3,2)}; //Create an array of the valid 2s
     bool mustPlayTwo = false;
     bool jokerPlayed = false;
     Card topCard;
@@ -117,8 +117,8 @@ public:
 
         if(drawTwo != 0){
             for (Card two : twos){
-                vector<Card>::iterator flag = find(Player.Cards.begin(),Player.Cards.end(), two); //defines a interator to where the struct is located
-                if(flag != Player.Cards.end()){ //if the interator is present 
+                vector<Card>::iterator flag = find(Computer.Cards.begin(),Computer.Cards.end(), two); //defines a interator to where the struct is located
+                if(flag != Computer.Cards.end()){ //if the interator is present 
                     mustPlayTwo = true;
                     goto playComp; //goto where the computer can play
                 }
@@ -126,7 +126,7 @@ public:
             }
             if(!mustPlayTwo){
                 for(int i = 0; i < drawTwo*2; i++){ //if multiple plus twos were played you must pick up chained pluses
-                    Player.gainCard(DrawPile.takeCard());
+                    Computer.gainCard(DrawPile.takeCard());
                 }
                 std::cout << "The computer drew " << drawTwo*2 << " cards" << std::endl;
                 drawTwo = 0; 

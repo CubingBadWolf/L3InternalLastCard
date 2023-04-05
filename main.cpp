@@ -7,6 +7,7 @@
 
 int main(){
     Game game;
+    std::cout << "Welcome to Last Card. The Cards in your hand are {number}{suit} and jokers are represented by j. For more details on the rules visit https://newzealandcasinos.nz/card-games/last-card/" << std::endl;
     bool win = false;
     while(!win){
         win = game.gameloop();
