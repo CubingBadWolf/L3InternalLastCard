@@ -51,7 +51,9 @@ public:
             for(int i = 0; i < DiscardPile.Cards.size() -2; i++){ //leave one card left in the discard pile
                 DrawPile.gainCard(DiscardPile.takeCard()); //move cards from discard pile stack to the drawpile in effect flipping the deck
             }
+            std::cout << "Due to low amount of cards in the draw pile the discard pile has been flipped to create a new draw pile" << std::endl;
         }
+        
     }
     bool gameloop(){
         //method to run all the steps in a game of last card
@@ -111,6 +113,30 @@ public:
             }
             else if(Player.Cards.size() == 1){
                 //Make input for last card here
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //Skips to the next new line in input stream
+                auto startTime = std::chrono::steady_clock::now(); //Starts the timer to measure elapesed time
+                std::chrono::duration<double> timeout(5.0); // 5 seconds
+
+                while (true) {
+                    // Check if input is available
+                    if (std::cin.peek() != EOF) {
+                        char c;
+                        std::cin.get(c);
+                        // Input received, break out of loop
+                        std::cout << "You Called Last Card!" << std::endl;
+                        break;
+                    }
+
+                    // Check if timeout has occurred
+                    auto elapsedTime = std::chrono::duration<double>(std::chrono::steady_clock::now() - startTime).count();
+                    if (elapsedTime >= timeout.count()) {
+                        std::cout << "You did not indicate last card" << std::endl;
+                        break;
+                    }
+
+                    // Sleep for a short duration to avoid high CPU usage
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                }
             }
         }
         flipDiscardPile(); // If the draw pile becomes less than two cards flip it
