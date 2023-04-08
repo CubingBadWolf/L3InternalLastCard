@@ -59,7 +59,7 @@ public:
         }
         
     }
-    int MultiThread_TimedInput() {
+    void MultiThread_TimedInput() {
         std::atomic<bool> inputReceived(false); 
         std::thread inputThreadObj(&Game::inputThread, this, std::ref(inputReceived)); //Sets up the seperate threads to handle inputs/timeouts
 
@@ -84,7 +84,6 @@ public:
             std::this_thread::sleep_for(std::chrono::milliseconds(100)); //Avoids high CPU useage by taking a short break inbetween checks
         }
         inputThreadObj.join(); //Rejoins threads 
-        return 0;
     }
 
     bool gameloop(){
