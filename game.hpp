@@ -5,12 +5,12 @@
 #define GAME
 
 /* TODO:
-    1: Add "Last Card" Calls (done for computer)
-    2: Clean up unnecessary code
+    1: Clean up unnecessary code
    */
     
 class Game{
 private:
+    const int StartingHand = 5;
     bool skipNextTurn = false;
     int drawTwo = 0;
     Card twos[4] = {Card(0,2), Card(1,2), Card(2,2), Card(3,2)}; //Create an array of the valid 2s
@@ -19,13 +19,48 @@ private:
     Card topCard;
     char upSuit;
 
-    void inputThread(std::atomic<bool>& inputReceived){
+
+bool MultiThread_TimedInput() {
+    std::atomic<bool> inputReceived(false);
+    std::thread inputThreadObj(&Game::InputThread, this, std::ref(inputReceived)); //Sets up the seperate thread for managing inputs
+
+    auto startTime = std::chrono::steady_clock::now(); //Sets up the timeout counter
+    std::chrono::duration<int> timeout(5);
+
+    bool called;
+    while (true) {
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime);
+        if(elapsedTime >= timeout){
+            called = false;
+            break;
+        }
+        else if(inputReceived.load()){
+            called = true;
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); //Prevents high CPU useage by taking a short break in between checks
+    }
+    inputThreadObj.detach(); //detatches the other thread
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return called;
+}
+
+    void InputThread(std::atomic<bool>& inputDetected){
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         char c;
-        std::cin.get(c);
-        inputReceived.store(true);
-        std::this_thread::yield(); // Yield to other threads to avoid high CPU usage
+        std::cin >> c;
+        inputDetected.store(true);
     }
+    void flipDiscardPile(){
+        if(DrawPile.Cards.size() <= 2){ //If the number of cards in the draw pilei s less than or equal to 2 the pile should be turned over
+            for(int i = 0; i < DiscardPile.Cards.size() -2; i++){ //leave one card left in the discard pile
+                DrawPile.gainCard(DiscardPile.takeCard()); //move cards from discard pile stack to the drawpile in effect flipping the deck
+            }
+            std::cout << "Due to low amount of cards in the draw pile the discard pile has been flipped to create a new draw pile" << std::endl;
+        }
+        
+    }
+
 
 public: 
     Deck DrawPile{true};
@@ -33,8 +68,6 @@ public:
     Deck Player{false};
     Deck Computer{false};
     //Initilises the deck for the game
-    const int StartingHand = 5;
-
     Game(){
         //class constructor deals cards to both player and computer
         DrawPile.shuffle();
@@ -49,41 +82,6 @@ public:
         }
         upSuit = DiscardPile.Cards.back().suit;
         topCard = DiscardPile.Cards.back(); //Takes the top card of the discard pile from the stack
-    }
-    void flipDiscardPile(){
-        if(DrawPile.Cards.size() <= 2){ //If the number of cards in the draw pilei s less than or equal to 2 the pile should be turned over
-            for(int i = 0; i < DiscardPile.Cards.size() -2; i++){ //leave one card left in the discard pile
-                DrawPile.gainCard(DiscardPile.takeCard()); //move cards from discard pile stack to the drawpile in effect flipping the deck
-            }
-            std::cout << "Due to low amount of cards in the draw pile the discard pile has been flipped to create a new draw pile" << std::endl;
-        }
-        
-    }
-    void MultiThread_TimedInput() {
-        std::atomic<bool> inputReceived(false); 
-        std::thread inputThreadObj(&Game::inputThread, this, std::ref(inputReceived)); //Sets up the seperate threads to handle inputs/timeouts
-
-        auto startTime = std::chrono::steady_clock::now(); //Initilises the timeout timer
-        std::chrono::duration<int> timeout(5);
-
-        while (true) {
-            if (inputReceived.load()) {
-                std::cout << "You Called Last Card!" << std::endl;
-                break;
-            }
-
-            auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime);
-            if (elapsedTime >= timeout) {
-                std::cout << "You did not indicate last card" << std::endl;
-                Card ToAdd = DrawPile.takeCard();
-                Player.gainCard(ToAdd);
-                DiscardPile.Cards.pop_back(); //remove the duplicate card
-                std::cout << "You drew " << ToAdd.pictureValue << ToAdd.suit << std::endl;
-                break;
-            }
-            std::this_thread::sleep_for(std::chrono::milliseconds(100)); //Avoids high CPU useage by taking a short break inbetween checks
-        }
-        inputThreadObj.join(); //Rejoins threads 
     }
 
     bool gameloop(){
@@ -143,7 +141,16 @@ public:
                 return true; //checks if a player has no cards left
             }
             else if(Player.Cards.size() == 1){
-                MultiThread_TimedInput();
+                if(MultiThread_TimedInput()){
+                    std::cout << "You called last card" << std::endl;
+                }
+                else{
+                    std::cout << "You did not indicate last card, pick up a card" << std::endl;
+                    Card ToAdd = DrawPile.takeCard();
+                    Player.gainCard(ToAdd);
+                    DiscardPile.Cards.pop_back(); //remove the duplicate card
+                    std::cout << "You drew " << ToAdd.pictureValue << ToAdd.suit << std::endl;
+                }
             }
         }
         flipDiscardPile(); // If the draw pile becomes less than two cards flip it

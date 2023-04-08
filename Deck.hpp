@@ -117,7 +117,7 @@ public:
                 if(havePlay2){ //If the player must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if player does have a two
                     std::cout << "It must be a two. ";
                     while (true){
-                        int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
+                        int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size()-1);
                         if(Cards[index].pictureValue == '2'){
                             std::cout << "You played " << Cards[index].pictureValue << Cards[index].suit << std::endl << "Pick up 2 cards!" << std::endl;
                             pick2++; //Add to the pick 2 operator
@@ -130,7 +130,7 @@ public:
                         }
                     }
                 }
-                int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size());
+                int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size()-1);
                 if(Cards[index].suit == nextSuit || Cards[index].pictureValue == facingCard.pictureValue || Cards[index].pictureValue == 'j'){
                     std::cout << "You have played " << Cards[index].pictureValue << Cards[index].suit << std::endl;
                     switch(Cards[index].pictureValue){
