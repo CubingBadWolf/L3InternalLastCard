@@ -20,37 +20,40 @@ private:
     char upSuit;
 
 
-bool MultiThread_TimedInput() {
-    std::atomic<bool> inputReceived(false);
-    std::thread inputThreadObj(&Game::InputThread, this, std::ref(inputReceived)); //Sets up the seperate thread for managing inputs
+    bool MultiThread_TimedInput(){
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::atomic<bool> inputReceived(false);
+        std::atomic<bool> timeoutReached(false);
+        std::thread inputThreadObj(&Game::InputThread, this, std::ref(inputReceived)); //Sets up the seperate thread for managing inputs
 
-    auto startTime = std::chrono::steady_clock::now(); //Sets up the timeout counter
-    std::chrono::duration<int> timeout(5);
 
-    bool called;
-    while (true) {
-        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime);
-        if(elapsedTime >= timeout){
-            called = false;
-            break;
+        auto startTime = std::chrono::steady_clock::now(); //Sets up the timeout counter
+        std::chrono::duration<int> timeout(3);
+
+        bool called;
+        while (true) {
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime);
+            if(elapsedTime >= timeout){
+                called = false;
+                std::cout << "You did not enter any indication you have last card, enter any key to continue" << std::endl;
+                break;
+            }
+            else if(inputReceived.load()){
+                called = true;
+                break;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(100)); //Prevents high CPU useage by taking a short break in between checks
         }
-        else if(inputReceived.load()){
-            called = true;
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); //Prevents high CPU useage by taking a short break in between checks
+        inputThreadObj.join(); //rejoins the other thread
+        return called;
     }
-    inputThreadObj.detach(); //detatches the other thread
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return called;
-}
 
     void InputThread(std::atomic<bool>& inputDetected){
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         char c;
-        std::cin >> c;
-        inputDetected.store(true);
+        c = std::getchar();
+        inputDetected.store(true); //stores true if input is reached
     }
+
     void flipDiscardPile(){
         if(DrawPile.Cards.size() <= 2){ //If the number of cards in the draw pilei s less than or equal to 2 the pile should be turned over
             for(int i = 0; i < DiscardPile.Cards.size() -2; i++){ //leave one card left in the discard pile
@@ -58,10 +61,7 @@ bool MultiThread_TimedInput() {
             }
             std::cout << "Due to low amount of cards in the draw pile the discard pile has been flipped to create a new draw pile" << std::endl;
         }
-        
     }
-
-
 public: 
     Deck DrawPile{true};
     Deck DiscardPile{false};
@@ -145,7 +145,7 @@ public:
                     std::cout << "You called last card" << std::endl;
                 }
                 else{
-                    std::cout << "You did not indicate last card, pick up a card" << std::endl;
+                    std::cout << "Pick up a card" << std::endl;
                     Card ToAdd = DrawPile.takeCard();
                     Player.gainCard(ToAdd);
                     DiscardPile.Cards.pop_back(); //remove the duplicate card
