@@ -7,3 +7,4 @@
 #include <chrono>
 #include <thread>
 #include <random>
+#include <atomic>
