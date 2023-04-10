@@ -12,7 +12,7 @@ public:
     std::vector<Card> Cards;
 
     Deck(bool initialDeck){ //constructor, will initilise deck in here if intialDeck is true, else it wont
-        if(initialDeck){
+        if(initialDeck){ //If true then this deck will be the draw pile hence should begin with all cards -jokers
             for(int n = 1; n < 13; n++){
                 for(int s = 0; s < 4; s++){
                     Card ToAdd(s,n);
@@ -37,14 +37,14 @@ public:
         return TopCard;
     }
 
-    Card playCard(Card facingCard, bool& skip, int& pick2, bool& havePlay2, bool& pick6, char& nextSuit, bool computer){ //contains references for boolean values for skipping / picking up 2 cards next turn
+    Card playCard(Card facingCard, bool& skip, int& pick2, bool& havePlay2, bool& pick6, char& nextSuit, bool computer){ //contains references for boolean values for skipping / picking up 2/6 cards next turn
         int playableCards = 0;
         for(Card card: Cards){
             if(card.suit == nextSuit || card.pictureValue == facingCard.pictureValue || card.pictureValue == 'j'){
-                playableCards++;
+                playableCards++; //Increases the number of playable cards
             }
         }
-        if(playableCards == 0){
+        if(playableCards == 0){ //If you don't have any playable cards you must draw a card. If this occurs return the top card of the pile so the game knows no card was played
             if(computer){
                 std::cout << "The computer has no cards to play" << std::endl;
                 return facingCard;
@@ -53,16 +53,15 @@ public:
             return facingCard;
         }
         else{
-            if (computer){
-                
+            if (computer){ //Logic for computer differes slightly from the players logic hence defined differently
                 for(int i = 0; i < Cards.size(); i++){
                     if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
                         if(Cards[i].pictureValue == '2'){
                             std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
                             pick2++; //Add to the pick 2 operator
-                            havePlay2 = false;
-                            nextSuit = Cards[i].suit;
+                            havePlay2 = false; //Resets the mustPlay2 flag
+                            nextSuit = Cards[i].suit; //Changes the suit to be played on
                             return takeCard(i);
                         }
                     }
@@ -70,7 +69,7 @@ public:
                         std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
 
                         switch(Cards[i].pictureValue){
-                        case 'A':{ //Change suit to your chosing
+                        case 'A':{ //Computer must pick a random suit to change the suit to
                             std::random_device rng;
                             std::uniform_int_distribution<int> dist(0, 3); //Generates random numbers to pick which suit
 
@@ -78,10 +77,10 @@ public:
                             std::cout << "The computer has changed the suit to " << nextSuit << std::endl;
                             return takeCard(i);
                         }
-                        case '2': //Next player picks up to cards
+                        case '2': //Next player picks up two cards
                             std::cout << "Computer: Pick up 2 cards" << std::endl;
                             pick2++; //Add to the pick 2 operator
-                            havePlay2 = false;
+                            havePlay2 = false; // Resets the mustPlay2 flag
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
@@ -177,10 +176,11 @@ public:
     }
 
     void gainCard(Card newCard){ //get passed a card to add to the deck
-        Cards.push_back(newCard);
+        Cards.push_back(newCard); // Adds the new card to the deck via stack
     }
 
     void printCards(std::string message){
+        // Prints all the cards in the deck
         std::cout << message << std::endl;
         for (int i = 0; i < Cards.size(); i++){
             std::cout << i << ": " << Cards[i].pictureValue << Cards[i].suit << std::endl;

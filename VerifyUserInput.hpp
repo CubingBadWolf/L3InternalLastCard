@@ -38,14 +38,14 @@ int verifyInputs(string message){
     cout << message;
     while (true){
         cin.clear();
-        cin >> in;
+        cin >> in; //Takes user input
         for(int i = 0; i < in.length(); i++){
             if (!isdigit(in[i])){ //Checks if all characters in the string are numeric
                 cout << "Please enter an integer: ";
                 break;
             }
         }
-        num = stoi(in);
+        num = stoi(in); //Converts the string to an integer if all characters are numeric
         return num;
     } 
 }

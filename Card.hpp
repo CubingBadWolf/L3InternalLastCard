@@ -54,7 +54,7 @@ public:
             
         }
     }
-    bool operator==(const Card& rhs) const { //manually define operator == to fix a bug
+    bool operator==(const Card& rhs) const { //manually define operator ==, to fix a bug
         return pictureValue == rhs.pictureValue && suit == rhs.suit;
     }
 };
