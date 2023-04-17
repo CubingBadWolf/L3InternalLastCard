@@ -18,12 +18,12 @@ int main(){
             
     std::cout << std::endl << "Would you like to play again? y/n" << std::endl;
     while(true){
-        char check;
+        std::string check;
         std::cin >> check;
-        if(check == 'y' || check == 'Y'){ //Check if input was a capital or a lowercase y
+        if(check == "y" || check == "Y"){ //Check if input was a capital or a lowercase y
             main(); //runs the code again
         }
-        else if(check == 'n' || check == 'N'){ //Check if input was a capital or lowercase n
+        else if(check == "n" || check == "N"){ //Check if input was a capital or lowercase n
             return 0;
         }
         else{
