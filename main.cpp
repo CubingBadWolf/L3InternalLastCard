@@ -7,8 +7,8 @@
 
 int main(){
     Game game; //Initilises the game
-    std::cout << "Welcome to Last Card. The Cards in your hand are {number}{suit} and jokers are represented by j. For more details on the rules visit https://newzealandcasinos.nz/card-games/last-card/" << std::endl;
-    std::cout << "In order to win you must call 'Last Card' in order to do this you must enter any character into the terminal when you have one card remaining. Penalty for not doing this within 3 seconds +1 card" << std::endl;
+    std::cout << "Welcome to Last Card. The Cards in your hand are {number}{suit} (example: the 3 of spades would be represented as 3S) and jokers are represented by j. For more details on the rules visit https://newzealandcasinos.nz/card-games/last-card/" << std::endl;
+    std::cout << "In order to win you must call 'Last Card' in order to do this you must enter any character into the terminal when you have one card remaining. Penalty for not doing this within 3 seconds: +1 card" << std::endl;
     //Prints all the neccesary starting information.
 
     bool win = false;

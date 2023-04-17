@@ -58,7 +58,7 @@ public:
                     if(havePlay2){ //If the computer must play a two it will iterate through vector until it finds a 2. Safetied by fact that it only sets havePlay2 to true if computer does have a two
                         if(Cards[i].pictureValue == '2'){
                             std::cout << "The computer has played " << Cards[i].pictureValue << Cards[i].suit << std::endl;
-                            std::cout << "Computer: Pick up 2 cards" << std::endl;
+                            std::cout << "Computer: \"Pick up 2 cards\"" << std::endl;
                             pick2++; //Add to the pick 2 operator
                             havePlay2 = false; //Resets the mustPlay2 flag
                             nextSuit = Cards[i].suit; //Changes the suit to be played on
@@ -78,20 +78,20 @@ public:
                             return takeCard(i);
                         }
                         case '2': //Next player picks up two cards
-                            std::cout << "Computer: Pick up 2 cards" << std::endl;
+                            std::cout << "Computer: \"Pick up 2 cards\"" << std::endl;
                             pick2++; //Add to the pick 2 operator
                             havePlay2 = false; // Resets the mustPlay2 flag
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
                         case '8'://Next player skips their next turn
-                            std::cout << "Computer: Skip next turn" << std::endl;
+                            std::cout << "Computer: \"Skip next turn\"" << std::endl;
                             skip = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
 
                         case 'J': //play again (For 2 players this is the same as an 8)
-                            std::cout << "Computer: Skip next turn" << std::endl;
+                            std::cout << "Computer: \"Skip next turn\"" << std::endl;
                             skip = true;
                             nextSuit = Cards[i].suit;
                             return takeCard(i);
@@ -118,7 +118,7 @@ public:
                     while (true){
                         int index = verifyInputs("Which card would you like to play?: ", 0 , Cards.size()-1);
                         if(Cards[index].pictureValue == '2'){
-                            std::cout << "You played " << Cards[index].pictureValue << Cards[index].suit << std::endl << "Pick up 2 cards!" << std::endl;
+                            std::cout << "You played " << Cards[index].pictureValue << Cards[index].suit << std::endl << "You: \"Pick up 2 cards!\"" << std::endl;
                             pick2++; //Add to the pick 2 operator
                             havePlay2 = false;
                             nextSuit = Cards[index].suit;
@@ -139,20 +139,20 @@ public:
                             return takeCard(index);
                         }
                         case '2': //Next player picks up to cards
-                            std::cout << "Pick up 2 cards!" << std::endl;
+                            std::cout << "You: \"Pick up 2 cards!\"" << std::endl;
                             pick2++; // Add another list of +2
                             havePlay2 = false;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
                         case '8'://Next player skips their next turn
-                            std::cout << "Skip next turn" << std::endl;
+                            std::cout << "You: \"Skip next turn\"" << std::endl;
                             skip = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);
 
                         case 'J': //play again (For 2 players this is the same as an 8)
-                            std::cout << "Skip next turn" << std::endl;
+                            std::cout << "You: \"Skip next turn\"" << std::endl;
                             skip = true;
                             nextSuit = Cards[index].suit;
                             return takeCard(index);

@@ -144,7 +144,7 @@ public:
             }
             else if(Player.Cards.size() == 1){
                 if(MultiThread_TimedInput()){ //Runs the multi threading
-                    std::cout << "You: Last card!" << std::endl;
+                    std::cout << "You: \"Last card!\"" << std::endl;
                 }
                 else{
                     std::cout << "Pick up a card" << std::endl;
@@ -201,7 +201,7 @@ public:
                 return true; //checks if a computer has no cards left
             }
             else if(Computer.Cards.size() == 1){
-                std::cout << "Computer: LAST CARD" << std::endl; //Inform the play the computer has one card remaining
+                std::cout << "Computer: \"LAST CARD\"" << std::endl; //Inform the play the computer has one card remaining
             }
         }
 
