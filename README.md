@@ -23,7 +23,7 @@ The game is played with the following rules:
 5. Power cards have special abilities:
     - **Aces**: Change Suit - The player can choose a new suit for the next player to follow.
     - **Jacks & Eights**: Skip next turn - The next player in the turn order is skipped.
-    - **Twos**: Pick up 2 - The next player in the turn order must pick up 2 cards from the draw pile and skip their turn.
+    - **Twos**: Pick up 2 - The next player in the turn order must pick up 2 cards from the draw pile and skip their turn. Unless the next player also has a two which can then be chanined to make it +4 which than then be played upon by another 2
     - **Jokers**: Pick up 6 & Change Suit - The next player in the turn order must pick up 6 cards from the draw pile and the player who played the Joker can choose a new suit for the next player to follow.
 5. Once a player has only one card remaining they must call "Last Card" in order to play the card on their next turn. If they do not then they must pick up a card.
 6. The game continues until one player has played all of their cards and is declared the winner.
@@ -60,7 +60,9 @@ When its is your turn to play a card you will be shown a list of cards in your h
 >2: 4S  
 >The top card of the discard pile is 6D
 
-In this example you would play a card by entering either 0 or 1 into the terminal as these are the playable cards in your hand. 
+In this example you would play a card by entering either 0 or 1 into the terminal as these are the playable cards in your hand. If the previous card was a two then you will see the additional line.
+> It must be a two
+If this is the case you can only enter the number which corresponds with a 2, which would chain the twos together to increase the pick up count.
 
 If you play a special card requiring further actions (Ace or Joker) you will then be asked to make your selection in the same way. When chosing the new suit to be played on you will be shown:
 >What suit do you wish to change it to?  
@@ -74,7 +76,7 @@ You will need to enter a number 0-3 which corresponds with which suit you would 
 ### Last Card Calls
 When the user has only one card remaining the computer will wait 3 seconds for this to be indicated
 You would do this by entering anything (including just pressing enter) into the terminal within the 3 seconds. 
-If 3 seconds go by without input then the user would be told that they didn't enter indication and will result in having one card added to their hand before the next turn.
+If 3 seconds go by without input then the user would be told that they didn't enter any indication and will result in having one card added to their hand before the next turn.
 
 ### Winning and playing again
 When you have played all your cards and completed any special actions, such as when the last card is an Ace or Joker you have won the game. 
