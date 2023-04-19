@@ -62,6 +62,7 @@ When its is your turn to play a card you will be shown a list of cards in your h
 
 In this example you would play a card by entering either 0 or 1 into the terminal as these are the playable cards in your hand. If the previous card was a two then you will see the additional line.
 > It must be a two
+
 If this is the case you can only enter the number which corresponds with a 2, which would chain the twos together to increase the pick up count.
 
 If you play a special card requiring further actions (Ace or Joker) you will then be asked to make your selection in the same way. When chosing the new suit to be played on you will be shown:
