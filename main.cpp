@@ -17,6 +17,8 @@ int main(){
     }
             
     std::cout << std::endl << "Would you like to play again? y/n" << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //Resets the input buffer
+
     while(true){
         std::string check;
         std::cin >> check;
