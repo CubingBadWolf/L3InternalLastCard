@@ -6,6 +6,7 @@ Last Card is a classic card game that is written in C++. The game is played with
 
 ## Rules
 
+The rules for this game of last card are based on the rules located at https://newzealandcasinos.nz/card-games/last-card/
 The game is played with the following rules:
 
 ### Setup
