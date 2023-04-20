@@ -161,6 +161,7 @@ public:
                             int suitNum = verifyInputs("What suit do you wish to change it to?\n0:H\n1:S\n2:D\n3:C\n",0,3);
                             nextSuit = Suits[suitNum]; //change the suit
                             pick6 = true; //make the next player pick up 6
+                            std::cout << "You: \"Pick Up 6!\"" << std::endl;
                             return takeCard(index);
                         }
                         default:
